@@ -8,9 +8,6 @@ class appSearch extends StatefulWidget {
 }
 
 class _appSearchState extends State<appSearch> {
-  //type data
-
-  //https://api.themoviedb.org/3/search/keyword?api_key=6e6c2ac305876492f99cc067787a39a0&query=The&page=1 query=search
   @override
   Widget build(BuildContext context) {
     return Scaffold(

@@ -14,73 +14,91 @@ class _HomeListState extends State<HomeList> {
   double kSpacing = 14.00;
   BorderRadius kBorderRadius = BorderRadius.circular(20.00);
   //show movie
-  List<Map<String, dynamic>> _trendings = [];
-  List<Map<String, dynamic>> _movies = [];
-  List<Map<String, dynamic>> _nowPlaying = [];
+  late Stream<List<Map<String, dynamic>>> _trendings;
+  late Stream<List<Map<String, dynamic>>> _movies;
+  late Stream<List<Map<String, dynamic>>> _nowPlaying;
 
   @override
   void initState() {
     super.initState();
-    getRecomended();
-    getTrending();
-    getNowPlaying();
+    _trendings = getTrending().asBroadcastStream();
+    _movies = getMovies().asBroadcastStream();
+    // getNowPlaying();
+    _nowPlaying = getNowPlaying().asBroadcastStream();
   }
 
-  void getTrending() async {
+  Stream<List<Map<String, dynamic>>> getTrending() {
+    return Stream.fromFuture(_fetchTrending());
+  }
+
+  Future<List<Map<String, dynamic>>> _fetchTrending() async {
     try {
       var response = await Dio().get(
           "https://api.themoviedb.org/3/trending/movie/day?api_key=6e6c2ac305876492f99cc067787a39a0");
       var dataset = response.data['results'];
-
-      setState(() {
-        _trendings = List<Map<String, dynamic>>.from(dataset).take(5).toList();
-      });
+      return List<Map<String, dynamic>>.from(dataset).take(5).toList();
     } catch (e) {
       print(e);
+      return [];
     }
   }
 
-  void getRecomended() async {
+  Stream<List<Map<String, dynamic>>> getMovies() {
+    return Stream.fromFuture(_fetchMovies());
+  }
+
+  Future<List<Map<String, dynamic>>> _fetchMovies() async {
     try {
       var response = await Dio().get(
           "https://api.themoviedb.org/3/movie/popular?api_key=6e6c2ac305876492f99cc067787a39a0");
       var data = response.data['results'];
-
-      setState(() {
-        _movies = List<Map<String, dynamic>>.from(data).take(6).toList();
-      });
+      return List<Map<String, dynamic>>.from(data).take(6).toList();
     } catch (e) {
       print(e);
+      return [];
     }
   }
 
-  void getNowPlaying() async {
+  Stream<List<Map<String, dynamic>>> getNowPlaying() {
+    return Stream.fromFuture(_fetchNowPlaying());
+  }
+
+  Future<List<Map<String, dynamic>>> _fetchNowPlaying() async {
     try {
       var response = await Dio().get(
           "https://api.themoviedb.org/3/movie/now_playing?api_key=6e6c2ac305876492f99cc067787a39a0");
       var nowplaying = response.data["results"];
-
-      setState(() {
-        _nowPlaying =
-            List<Map<String, dynamic>>.from(nowplaying).take(6).toList();
-      });
+      return List<Map<String, dynamic>>.from(nowplaying).take(6).toList();
     } catch (e) {
       print(e);
+      return [];
     }
   }
 
+  // void getNowPlaying() async {
+  //   try {
+  //     var response = await Dio().get(
+  //         "https://api.themoviedb.org/3/movie/now_playing?api_key=6e6c2ac305876492f99cc067787a39a0");
+  //     var nowplaying = response.data["results"];
+
+  //     setState(() {
+  //       _nowPlaying =
+  //           List<Map<String, dynamic>>.from(nowplaying).take(6).toList();
+  //     });
+  //   } catch (e) {
+  //     print(e);
+  //   }
+  // }
+
   @override
   Widget build(BuildContext context) {
-    // var size = MediaQuery.of(context).size;
-    // final double itemHeight = (size.height - kToolbarHeight - 24) / 1.8;
-    // final double itemWidth = size.width / 2;
     return Scaffold(
         body: CustomScrollView(
       slivers: [
         const SliverAppBar(
           title: Text('Movie'),
           centerTitle: true,
-          expandedHeight: 320,
+          expandedHeight: 120,
           elevation: 0,
           pinned: true,
         ),
@@ -99,45 +117,60 @@ class _HomeListState extends State<HomeList> {
             padding: const EdgeInsets.all(8.0),
             child: Container(
               height: 290.0,
-              child: ListView.builder(
-                scrollDirection: Axis.horizontal,
-                itemCount: _trendings.length,
-                itemBuilder: (context, int index) {
-                  return Container(
-                    width: 130.0,
-                    child: Card(
-                      elevation: 20,
-                      child: InkWell(
-                        onTap: () {
-                          Navigator.push(
-                              context,
-                              MaterialPageRoute(
-                                  builder: (context) =>
-                                      DetailMovies(movie: _trendings[index])));
-                        },
-                        child: Column(
-                          children: [
-                            ClipRRect(
-                              borderRadius: BorderRadius.vertical(
-                                  top: Radius.circular(kSpacing)),
-                              child: Image.network(
-                                  'http://image.tmdb.org/t/p/w500/${_trendings[index]['poster_path']}'),
+              child: StreamBuilder<List<Map<String, dynamic>>>(
+                stream: _trendings,
+                builder: (context, snapshot) {
+                  if (snapshot.hasData) {
+                    return ListView.builder(
+                      scrollDirection: Axis.horizontal,
+                      itemCount: snapshot.data?.length,
+                      itemBuilder: (context, int index) {
+                        return Container(
+                          width: 130.0,
+                          child: Card(
+                            elevation: 20,
+                            child: InkWell(
+                              onTap: () {
+                                Navigator.push(
+                                    context,
+                                    MaterialPageRoute(
+                                        builder: (context) => DetailMovies(
+                                            movie: snapshot.data![index])));
+                              },
+                              child: Column(
+                                children: [
+                                  ClipRRect(
+                                    borderRadius: BorderRadius.vertical(
+                                        top: Radius.circular(kSpacing)),
+                                    child: Image.network(
+                                        'http://image.tmdb.org/t/p/w500/${snapshot.data![index]['poster_path']}'),
+                                  ),
+                                  Text(
+                                    '${snapshot.data![index]['original_title']}',
+                                    style: TextStyle(fontSize: 13),
+                                    textAlign: TextAlign.center,
+                                  ),
+                                ],
+                              ),
                             ),
-                            Text(
-                              '${_trendings[index]['original_title']}',
-                              style: TextStyle(fontSize: 13),
-                              textAlign: TextAlign.center,
-                            ),
-                          ],
-                        ),
-                      ),
-                    ),
-                  );
+                          ),
+                        );
+                      },
+                    );
+                  } else if (snapshot.hasError) {
+                    return Text('API sedang bermasalah');
+                  } else {
+                    return CircularProgressIndicator(
+                      strokeWidth: 20.0,
+                    );
+                  }
                 },
               ),
             ),
           ),
+          //
         ),
+
         const SliverToBoxAdapter(
           child: Padding(
             padding: EdgeInsets.only(
@@ -149,54 +182,65 @@ class _HomeListState extends State<HomeList> {
           ),
         ),
 
-        SliverGrid(
-          gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-            crossAxisCount: 2,
-            childAspectRatio: 1 / 2, //width / height
-          ),
-          delegate: SliverChildBuilderDelegate(
-            (BuildContext context, int index) {
-              return Padding(
-                  padding:
-                      EdgeInsets.only(left: 12, bottom: 12, right: 12, top: 11),
-                  child: Card(
-                    elevation: 20,
-                    color: Color.fromARGB(255, 23, 24, 28),
-                    child: InkWell(
-                      onTap: () {
-                        Navigator.push(
-                            context,
-                            MaterialPageRoute(
-                                builder: (context) => DetailMovies(
-                                      movie: _movies[index],
-                                    )));
-                      },
-                      child: Column(
-                        children: [
-                          ClipRRect(
-                            borderRadius: BorderRadius.vertical(
-                                top: Radius.circular(kSpacing)),
-                            child: Image.network(
-                                'http://image.tmdb.org/t/p/w500/${_movies[index]['poster_path']}'),
-                          ),
-                          Text(
-                            '${_movies[index]['original_title']}',
-                            style: const TextStyle(
-                              fontWeight: FontWeight.bold,
-                              fontSize: 13,
+        StreamBuilder<List<Map<String, dynamic>>>(
+          stream: _movies,
+          builder: (context, snapshot) {
+            if (snapshot.hasData) {
+              return SliverGrid(
+                gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+                  crossAxisCount: 2,
+                  childAspectRatio: 1 / 2, //width / height
+                ),
+                delegate: SliverChildBuilderDelegate(
+                  (BuildContext context, int index) {
+                    return Padding(
+                        padding: EdgeInsets.only(
+                            left: 12, bottom: 12, right: 12, top: 11),
+                        child: Card(
+                          elevation: 20,
+                          color: Color.fromARGB(255, 23, 24, 28),
+                          child: InkWell(
+                            onTap: () {
+                              Navigator.push(
+                                  context,
+                                  MaterialPageRoute(
+                                      builder: (context) => DetailMovies(
+                                            movie: snapshot.data![index],
+                                          )));
+                            },
+                            child: Column(
+                              children: [
+                                ClipRRect(
+                                  borderRadius: BorderRadius.vertical(
+                                      top: Radius.circular(kSpacing)),
+                                  child: Image.network(
+                                      'http://image.tmdb.org/t/p/w500/${snapshot.data![index]['poster_path']}'),
+                                ),
+                                Text(
+                                  '${snapshot.data![index]['original_title']}',
+                                  style: const TextStyle(
+                                    fontWeight: FontWeight.bold,
+                                    fontSize: 13,
+                                  ),
+                                  textAlign: TextAlign.center,
+                                ),
+                                Text(
+                                  '${snapshot.data![index]['release_date']}',
+                                ),
+                              ],
                             ),
-                            textAlign: TextAlign.center,
                           ),
-                          Text(
-                            '${_movies[index]['release_date']}',
-                          ),
-                        ],
-                      ),
-                    ),
-                  ));
-            },
-            childCount: _movies.length,
-          ), //gridcount
+                        ));
+                  },
+                  childCount: snapshot.data?.length,
+                ),
+              );
+            } else if (snapshot.hasError) {
+              return SliverFillRemaining(child: Text('API dalam masalah'));
+            } else {
+              return SliverFillRemaining(child: CircularProgressIndicator());
+            }
+          },
         ),
         const SliverToBoxAdapter(
           child: Padding(
@@ -213,41 +257,52 @@ class _HomeListState extends State<HomeList> {
             padding: const EdgeInsets.all(8.0),
             child: Container(
               height: 200.0,
-              child: ListView.builder(
-                scrollDirection: Axis.horizontal,
-                itemCount: _nowPlaying.length,
-                itemBuilder: (context, int index) {
-                  return Container(
-                    width: 260.0,
-                    child: Card(
-                      elevation: 20,
-                      child: InkWell(
-                        onTap: () {
-                          Navigator.push(
-                              context,
-                              MaterialPageRoute(
-                                  builder: (context) => DetailMovies(
-                                        movie: _nowPlaying[index],
-                                      )));
-                        },
-                        child: Column(
-                          children: [
-                            ClipRRect(
-                              borderRadius: BorderRadius.vertical(
-                                  top: Radius.circular(kSpacing)),
-                              child: Image.network(
-                                  'http://image.tmdb.org/t/p/w500/${_nowPlaying[index]['backdrop_path']}'),
+              child: StreamBuilder<List<Map<String, dynamic>>>(
+                stream: _nowPlaying,
+                builder: (context, snapshot) {
+                  if (snapshot.hasData) {
+                    return ListView.builder(
+                      scrollDirection: Axis.horizontal,
+                      itemCount: snapshot.data?.length,
+                      itemBuilder: (context, int index) {
+                        return Container(
+                          width: 260.0,
+                          child: Card(
+                            elevation: 20,
+                            child: InkWell(
+                              onTap: () {
+                                Navigator.push(
+                                    context,
+                                    MaterialPageRoute(
+                                        builder: (context) => DetailMovies(
+                                              movie: snapshot.data![index],
+                                            )));
+                              },
+                              child: Column(
+                                children: [
+                                  ClipRRect(
+                                    borderRadius: BorderRadius.vertical(
+                                        top: Radius.circular(kSpacing)),
+                                    child: Image.network(
+                                        'http://image.tmdb.org/t/p/w500/${snapshot.data![index]['backdrop_path']}'),
+                                  ),
+                                  Text(
+                                    '${snapshot.data![index]['original_title']}',
+                                    style: TextStyle(fontSize: 13),
+                                    textAlign: TextAlign.center,
+                                  ),
+                                ],
+                              ),
                             ),
-                            Text(
-                              '${_nowPlaying[index]['original_title']}',
-                              style: TextStyle(fontSize: 13),
-                              textAlign: TextAlign.center,
-                            ),
-                          ],
-                        ),
-                      ),
-                    ),
-                  );
+                          ),
+                        );
+                      },
+                    );
+                  } else if (snapshot.hasError) {
+                    return Text('Error fetching data');
+                  } else {
+                    return CircularProgressIndicator();
+                  }
                 },
               ),
             ),

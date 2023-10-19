@@ -12,7 +12,8 @@ class _WathlistState extends State<Wathlist> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('Watch List'),
+        title: Text('Watchlist'),
+        centerTitle: true,
       ),
     );
   }
