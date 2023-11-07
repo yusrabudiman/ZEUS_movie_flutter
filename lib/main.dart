@@ -1,13 +1,18 @@
 import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:provider/provider.dart';
+import 'package:spons/provider/watchlist_provider.dart';
 
+import 'detailpage/DetailMovie.dart';
 import 'navigation/home.dart';
 import 'navigation/search.dart';
 import 'navigation/watchlist.dart';
 
 void main() {
-  runApp(const MyApp());
+  runApp(MultiProvider(providers: [
+    ChangeNotifierProvider(create: (_) => WatchlistProvider()),
+  ], child: MyApp()));
 }
 
 class MyApp extends StatelessWidget {
@@ -42,7 +47,7 @@ class _MyWidgetState extends State<MyWidget> {
       } else if (_indexNavigation == 1) {
         return appSearch();
       } else {
-        return Wathlist();
+        return Watchlist();
       }
     }
 

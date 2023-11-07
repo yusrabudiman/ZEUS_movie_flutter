@@ -13,7 +13,7 @@ class HomeList extends StatefulWidget {
 class _HomeListState extends State<HomeList> {
   double kSpacing = 14.00;
   BorderRadius kBorderRadius = BorderRadius.circular(20.00);
-  //show movie
+
   late Stream<List<Map<String, dynamic>>> _trendings;
   late Stream<List<Map<String, dynamic>>> _movies;
   late Stream<List<Map<String, dynamic>>> _nowPlaying;
@@ -23,7 +23,7 @@ class _HomeListState extends State<HomeList> {
     super.initState();
     _trendings = getTrending().asBroadcastStream();
     _movies = getMovies().asBroadcastStream();
-    // getNowPlaying();
+
     _nowPlaying = getNowPlaying().asBroadcastStream();
   }
 
@@ -74,21 +74,6 @@ class _HomeListState extends State<HomeList> {
       return [];
     }
   }
-
-  // void getNowPlaying() async {
-  //   try {
-  //     var response = await Dio().get(
-  //         "https://api.themoviedb.org/3/movie/now_playing?api_key=6e6c2ac305876492f99cc067787a39a0");
-  //     var nowplaying = response.data["results"];
-
-  //     setState(() {
-  //       _nowPlaying =
-  //           List<Map<String, dynamic>>.from(nowplaying).take(6).toList();
-  //     });
-  //   } catch (e) {
-  //     print(e);
-  //   }
-  // }
 
   @override
   Widget build(BuildContext context) {
@@ -160,9 +145,7 @@ class _HomeListState extends State<HomeList> {
                   } else if (snapshot.hasError) {
                     return Text('API sedang bermasalah');
                   } else {
-                    return CircularProgressIndicator(
-                      strokeWidth: 20.0,
-                    );
+                    return Center(child: CircularProgressIndicator());
                   }
                 },
               ),
@@ -197,7 +180,7 @@ class _HomeListState extends State<HomeList> {
                         padding: EdgeInsets.only(
                             left: 12, bottom: 12, right: 12, top: 11),
                         child: Card(
-                          elevation: 20,
+                          elevation: 10,
                           color: Color.fromARGB(255, 23, 24, 28),
                           child: InkWell(
                             onTap: () {
@@ -219,13 +202,9 @@ class _HomeListState extends State<HomeList> {
                                 Text(
                                   '${snapshot.data![index]['original_title']}',
                                   style: const TextStyle(
-                                    fontWeight: FontWeight.bold,
                                     fontSize: 13,
                                   ),
                                   textAlign: TextAlign.center,
-                                ),
-                                Text(
-                                  '${snapshot.data![index]['release_date']}',
                                 ),
                               ],
                             ),
@@ -238,7 +217,8 @@ class _HomeListState extends State<HomeList> {
             } else if (snapshot.hasError) {
               return SliverFillRemaining(child: Text('API dalam masalah'));
             } else {
-              return SliverFillRemaining(child: CircularProgressIndicator());
+              return SliverFillRemaining(
+                  child: Center(child: CircularProgressIndicator()));
             }
           },
         ),

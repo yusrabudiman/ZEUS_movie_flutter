@@ -1,5 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
+import 'package:provider/provider.dart';
+
+import '../provider/watchlist_provider.dart';
 
 class DetailMovies extends StatefulWidget {
   final Map<String, dynamic> movie;
@@ -11,11 +14,10 @@ class DetailMovies extends StatefulWidget {
 }
 
 class _DetailMoviesState extends State<DetailMovies> {
-  var bodyState = true;
-
   @override
   Widget build(BuildContext context) {
     final formatter = NumberFormat("#,###");
+    final prov = Provider.of<WatchlistProvider>(context);
     return Scaffold(
       body: CustomScrollView(
         slivers: [
@@ -64,15 +66,23 @@ class _DetailMoviesState extends State<DetailMovies> {
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
                       ElevatedButton.icon(
-                          onPressed: () {
-                            setState(() {
-                              bodyState = !bodyState;
-                            });
-                          },
-                          icon: bodyState
-                              ? const Icon(Icons.favorite_border)
-                              : const Icon(Icons.favorite),
-                          label: const Text("Watchlist")),
+                        onPressed: () {
+                          prov.toggleMovieInWatchlist(widget.movie);
+                        },
+                        icon: prov.isMovieInWatchlist(widget.movie)
+                            ? const Icon(Icons.favorite)
+                            : const Icon(Icons.favorite_border),
+                        label: const Text("Watchlist"),
+                      )
+                      // ElevatedButton.icon(
+                      //   onPressed: () {
+                      //     prov.toggleBodyState();
+                      //   },
+                      //   icon: prov.bodyState
+                      //       ? const Icon(Icons.favorite_border)
+                      //       : const Icon(Icons.favorite),
+                      //   label: const Text("Watchlist"),
+                      // )
                     ],
                   ),
                   const Divider(

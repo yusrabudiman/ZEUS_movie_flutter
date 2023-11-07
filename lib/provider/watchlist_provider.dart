@@ -1,37 +1,54 @@
+import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:shared_preferences/shared_preferences.dart';
+import 'dart:convert';
 
 class WatchlistProvider extends ChangeNotifier {
-  List<String> _movies = [];
-  List<String> get item => _movies;
+  List<Map<String, dynamic>> _watchlist = [];
 
-  void toggleMovies(String item) {
-    final isExist = _movies.contains(item);
-    if (isExist) {
-      _movies.remove(item);
+  WatchlistProvider() {
+    loadWatchlist();
+  }
+
+  List<Map<String, dynamic>> get watchlist => _watchlist;
+
+  void addToWatchlist(Map<String, dynamic> movie) {
+    _watchlist.add(movie);
+    saveWatchlist();
+    notifyListeners();
+  }
+
+  void removeFromWatchlist(Map<String, dynamic> movie) {
+    _watchlist.remove(movie);
+    saveWatchlist();
+    notifyListeners();
+  }
+
+  bool isMovieInWatchlist(Map<String, dynamic> movie) {
+    return _watchlist.contains(movie);
+  }
+
+  void toggleMovieInWatchlist(Map<String, dynamic> movie) {
+    if (isMovieInWatchlist(movie)) {
+      removeFromWatchlist(movie);
     } else {
-      _movies.add(item);
+      addToWatchlist(movie);
     }
-    notifyListeners();
   }
 
-  bool isExist(String item) {
-    final isExist = _movies.contains(item);
-    return isExist;
+  void saveWatchlist() async {
+    final prefs = await SharedPreferences.getInstance();
+    prefs.setString('watchlist', json.encode(_watchlist));
   }
 
-  void clearMovies() {
-    _movies = [];
-    notifyListeners();
-  }
-
-  static WatchlistProvider of(
-    BuildContext context, {
-    bool listen = true,
-  }) {
-    return Provider.of<WatchlistProvider>(
-      context,
-      listen: listen,
-    );
+  void loadWatchlist() async {
+    final prefs = await SharedPreferences.getInstance();
+    final storedWatchlist = prefs.getString('watchlist');
+    if (storedWatchlist != null) {
+      _watchlist =
+          List<Map<String, dynamic>>.from(json.decode(storedWatchlist));
+      notifyListeners();
+    }
   }
 }
