@@ -71,38 +71,47 @@ class _appSearchState extends State<appSearch> {
           ),
           StreamBuilder<List>(
             stream: searchData,
-            builder: (BuildContext context, AsyncSnapshot snapshot) {
+            builder: (BuildContext context, AsyncSnapshot<List> snapshot) {
               if (snapshot.hasData) {
-                return SliverList(
-                  delegate: SliverChildBuilderDelegate(
-                    (BuildContext context, int position) {
-                      return snapshot.data[position]['title']
-                              .contains(searchString)
-                          ? InkWell(
-                              onTap: () {
-                                Navigator.push(
-                                  context,
-                                  MaterialPageRoute(
-                                    builder: (context) => DetailMovies(
-                                      movie: snapshot.data[position],
+                List? data = snapshot.data;
+                return data!
+                        .where((item) => item['title'].contains(searchString))
+                        .isEmpty
+                    ? SliverFillRemaining(
+                        child: Center(
+                            child:
+                                Text('Try feature search, if you have idea')),
+                      )
+                    : SliverList(
+                        delegate: SliverChildBuilderDelegate(
+                          (BuildContext context, int position) {
+                            return data[position]['title']
+                                    .contains(searchString)
+                                ? InkWell(
+                                    onTap: () {
+                                      Navigator.push(
+                                        context,
+                                        MaterialPageRoute(
+                                          builder: (context) => DetailMovies(
+                                            movie: data[position],
+                                          ),
+                                        ),
+                                      );
+                                    },
+                                    child: ListTile(
+                                      title: Text(data[position]['title']),
+                                      subtitle: Text('Release: ' +
+                                          data[position]['release_date'] +
+                                          ' - Vote: ' +
+                                          data[position]['vote_average']
+                                              .toString()),
                                     ),
-                                  ),
-                                );
-                              },
-                              child: ListTile(
-                                title: Text(snapshot.data[position]['title']),
-                                subtitle: Text('Release: ' +
-                                    snapshot.data[position]['release_date'] +
-                                    ' - Vote: ' +
-                                    snapshot.data[position]['vote_average']
-                                        .toString()),
-                              ),
-                            )
-                          : Container();
-                    },
-                    childCount: snapshot.data.length,
-                  ),
-                );
+                                  )
+                                : Container();
+                          },
+                          childCount: data.length,
+                        ),
+                      );
               } else if (snapshot.hasError) {
                 return SliverFillRemaining(
                   child: Center(child: Text("${snapshot.error}")),
