@@ -55,6 +55,7 @@ class _appSearchState extends State<appSearch> {
             padding: EdgeInsets.all(16.0),
             sliver: SliverToBoxAdapter(
               child: TextField(
+                textCapitalization: TextCapitalization.words,
                 onChanged: (value) {
                   setState(() {
                     searchString = value;
