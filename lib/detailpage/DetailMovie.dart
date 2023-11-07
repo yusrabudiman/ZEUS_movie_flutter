@@ -31,12 +31,10 @@ class _DetailMoviesState extends State<DetailMovies> {
                       fit: BoxFit.cover,
                       width: double.maxFinite,
                       errorBuilder: (context, error, stackTrace) {
-                        // Display an error image from assets when the network image fails to load
                         return Image.asset('assets/not_available.png');
                       },
                     )
-                  : Image.asset(
-                      'assets/not_available.png'), // Display a default image when the image path is null
+                  : Image.asset('assets/not_available.png'),
             ),
           ),
           SliverToBoxAdapter(
