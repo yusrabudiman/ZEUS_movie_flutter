@@ -25,11 +25,18 @@ class _DetailMoviesState extends State<DetailMovies> {
             pinned: true,
             expandedHeight: 280,
             flexibleSpace: FlexibleSpaceBar(
-              background: Image.network(
-                "http://image.tmdb.org/t/p/w500/${widget.movie['backdrop_path']}",
-                fit: BoxFit.cover,
-                width: double.maxFinite,
-              ),
+              background: widget.movie['backdrop_path'] != null
+                  ? Image.network(
+                      "http://image.tmdb.org/t/p/w500/${widget.movie['backdrop_path']}",
+                      fit: BoxFit.cover,
+                      width: double.maxFinite,
+                      errorBuilder: (context, error, stackTrace) {
+                        // Display an error image from assets when the network image fails to load
+                        return Image.asset('assets/not_available.png');
+                      },
+                    )
+                  : Image.asset(
+                      'assets/not_available.png'), // Display a default image when the image path is null
             ),
           ),
           SliverToBoxAdapter(
