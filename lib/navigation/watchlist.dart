@@ -52,8 +52,16 @@ class _WatchlistState extends State<Watchlist> {
                           ClipRRect(
                             borderRadius: BorderRadius.vertical(
                                 top: Radius.circular(kSpacing)),
-                            child: Image.network(
-                                'http://image.tmdb.org/t/p/w500/${prov.watchlist[index]['poster_path']}'),
+                            child: prov.watchlist[index]['poster_path'] != null
+                                ? Image.network(
+                                    'http://image.tmdb.org/t/p/w500/${prov.watchlist[index]['poster_path']}',
+                                    errorBuilder: (context, error, stackTrace) {
+                                      return Image.asset(
+                                          'assets/not_available.png');
+                                    },
+                                  )
+                                : Image.asset(
+                                    'assets/not_available.png'), // Display the asset image when the image path is null
                           ),
                           Text(
                             '${prov.watchlist[index]['original_title']}',

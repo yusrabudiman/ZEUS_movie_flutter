@@ -79,15 +79,6 @@ class _DetailMoviesState extends State<DetailMovies> {
                             : const Icon(Icons.favorite_border),
                         label: const Text("Watchlist"),
                       )
-                      // ElevatedButton.icon(
-                      //   onPressed: () {
-                      //     prov.toggleBodyState();
-                      //   },
-                      //   icon: prov.bodyState
-                      //       ? const Icon(Icons.favorite_border)
-                      //       : const Icon(Icons.favorite),
-                      //   label: const Text("Watchlist"),
-                      // )
                     ],
                   ),
                   const Divider(
