@@ -1,5 +1,7 @@
 import 'package:dio/dio.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:spons/formpage/flutter_login.dart';
 
 import '../detailpage/DetailMovie.dart';
 
@@ -13,6 +15,7 @@ class HomeList extends StatefulWidget {
 class _HomeListState extends State<HomeList> {
   double kSpacing = 14.00;
   BorderRadius kBorderRadius = BorderRadius.circular(20.00);
+  String? email = FirebaseAuth.instance.currentUser!.email;
 
   late Stream<List<Map<String, dynamic>>> _trendings;
   late Stream<List<Map<String, dynamic>>> _movies;
@@ -25,6 +28,13 @@ class _HomeListState extends State<HomeList> {
     _movies = getMovies().asBroadcastStream();
 
     _nowPlaying = getNowPlaying().asBroadcastStream();
+  }
+
+  Future<void> _signOut() async {
+    await FirebaseAuth.instance.signOut();
+    Navigator.of(context).pushReplacement(MaterialPageRoute(
+      builder: (context) => LoginScreen(),
+    ));
   }
 
   Stream<List<Map<String, dynamic>>> getTrending() {
@@ -52,7 +62,7 @@ class _HomeListState extends State<HomeList> {
       var response = await Dio().get(
           "https://api.themoviedb.org/3/movie/popular?api_key=6e6c2ac305876492f99cc067787a39a0");
       var data = response.data['results'];
-      return List<Map<String, dynamic>>.from(data).take(6).toList();
+      return List<Map<String, dynamic>>.from(data).take(10).toList();
     } catch (e) {
       print(e);
       return [];
@@ -80,12 +90,26 @@ class _HomeListState extends State<HomeList> {
     return Scaffold(
         body: CustomScrollView(
       slivers: [
-        const SliverAppBar(
-          title: Text('Movie'),
+        SliverAppBar(
+          title: Text(
+            "welcome: $email",
+            style: TextStyle(fontSize: 16),
+          ),
           centerTitle: true,
           expandedHeight: 120,
           elevation: 0,
           pinned: true,
+          actions: <Widget>[
+            IconButton(
+              onPressed: () {
+                _signOut();
+              },
+              icon: const Icon(
+                Icons.logout_sharp,
+              ),
+              tooltip: 'Logout',
+            )
+          ],
         ),
         const SliverToBoxAdapter(
           child: Padding(
