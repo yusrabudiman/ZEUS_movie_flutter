@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_login/flutter_login.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
-// import 'package:m06/auth.dart';
-// import 'package:m06/home.dart';
 import 'package:spons/formpage/auth.dart';
 import 'package:spons/menu.dart';
+
+import 'firebase_analytics.dart';
 
 class LoginScreen extends StatefulWidget {
   const LoginScreen({super.key});
@@ -14,6 +14,7 @@ class LoginScreen extends StatefulWidget {
 }
 
 class _LoginScreenState extends State<LoginScreen> {
+  MyAnalyticsHelper fbAnalytics = MyAnalyticsHelper();
   late AuthFirebase auth;
 
   @override
@@ -22,8 +23,7 @@ class _LoginScreenState extends State<LoginScreen> {
     auth.getUser().then((value) {
       MaterialPageRoute route;
       if (value != null) {
-        route = MaterialPageRoute(
-            builder: (context) => MyWidget()); //(wid: value.uid)
+        route = MaterialPageRoute(builder: (context) => MyWidget());
         Navigator.pushReplacement(context, route);
       }
     }).catchError((err) => print(err));
@@ -67,6 +67,7 @@ class _LoginScreenState extends State<LoginScreen> {
     return auth.login(data.name, data.password).then((value) {
       if (value != null) {
         MaterialPageRoute(builder: (context) => MyWidget()); //wid: value
+        print(fbAnalytics.testEvent("login"));
       } else {
         final snackbar = SnackBar(
           content: const Text('Login Failed, user not Found'),
@@ -85,6 +86,7 @@ class _LoginScreenState extends State<LoginScreen> {
 
   Future<String?>? _onSignUp(SignupData data) {
     return auth.signUp(data.name!, data.password!).then((value) {
+      print(fbAnalytics.testEvent("login"));
       final snackbar = SnackBar(
         content: const Text("Sign Up Successful"),
         action: SnackBarAction(label: 'OK', onPressed: () {}),

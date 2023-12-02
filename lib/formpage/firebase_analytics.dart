@@ -18,6 +18,4 @@ class MyAnalyticsHelper {
     await analytics.setUserProperty(name: 'regular', value: 'indeed');
     print('setUserProperty');
   }
-
-  void testEventLog(String s) {}
 }

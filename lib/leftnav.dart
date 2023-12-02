@@ -1,4 +1,7 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:spons/leftnav/profile.dart';
+import 'package:spons/leftnav/settings.dart';
 
 class leftNavbarAksi extends StatefulWidget {
   const leftNavbarAksi({super.key});
@@ -8,6 +11,7 @@ class leftNavbarAksi extends StatefulWidget {
 }
 
 class _leftNavbarAksiState extends State<leftNavbarAksi> {
+  String? email = FirebaseAuth.instance.currentUser?.email;
   @override
   Widget build(BuildContext context) {
     return Drawer(
@@ -16,7 +20,7 @@ class _leftNavbarAksiState extends State<leftNavbarAksi> {
           UserAccountsDrawerHeader(
             currentAccountPicture: CircleAvatar(),
             accountName: Text('victoria'),
-            accountEmail: Text('testing@gmail.com'),
+            accountEmail: Text('$email'),
             decoration: BoxDecoration(
               color: Color.fromARGB(255, 17, 41, 49),
             ),
@@ -24,16 +28,20 @@ class _leftNavbarAksiState extends State<leftNavbarAksi> {
           ListTile(
             leading: Icon(Icons.people),
             title: Text('Profile'),
-            onTap: () => null,
+            onTap: () => {
+              Navigator.push(
+                  context, MaterialPageRoute(builder: (context) => Profiles()))
+            },
           ),
           Divider(),
           ListTile(
             leading: Icon(Icons.settings),
             title: Text('Settings'),
-            onTap: () => null,
+            onTap: () {
+              Navigator.push(
+                  context, MaterialPageRoute(builder: (context) => Settings()));
+            },
           ),
-          Divider(),
-          ListTile()
         ],
       ),
     );
