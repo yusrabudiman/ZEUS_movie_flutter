@@ -22,7 +22,7 @@ class _WatchlistState extends State<Watchlist> {
       body: prov.watchlist.isEmpty
           ? Center(
               child: Text(
-              'watchlist empty ?\ntry feature favorite in the detail movie if you like',
+              'watchlist empty ?\ntry features favorite in the detail movie if you like',
               textAlign: TextAlign.center,
             ))
           : CustomScrollView(

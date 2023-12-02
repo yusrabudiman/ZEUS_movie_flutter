@@ -36,11 +36,9 @@ class _appSearchState extends State<appSearch> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      
         body: Container(
       child: CustomScrollView(
         slivers: [
-
           SliverPadding(
             padding: EdgeInsets.all(16.0),
             sliver: SliverToBoxAdapter(
@@ -54,7 +52,7 @@ class _appSearchState extends State<appSearch> {
                 },
                 controller: controller,
                 decoration: InputDecoration(
-                    labelText: "Search Movie",
+                    labelText: "Search Movies",
                     prefixIcon: Icon(Icons.search),
                     hintText: "Try: Oppenheimer"),
               ),

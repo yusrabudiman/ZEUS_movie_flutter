@@ -16,7 +16,6 @@ class HomeList extends StatefulWidget {
 class _HomeListState extends State<HomeList> {
   double kSpacing = 14.00;
   BorderRadius kBorderRadius = BorderRadius.circular(20.00);
-  
 
   late Stream<List<Map<String, dynamic>>> _trendings;
   late Stream<List<Map<String, dynamic>>> _movies;
@@ -30,8 +29,6 @@ class _HomeListState extends State<HomeList> {
 
     _nowPlaying = getNowPlaying().asBroadcastStream();
   }
-
-
 
   Stream<List<Map<String, dynamic>>> getTrending() {
     return Stream.fromFuture(_fetchTrending());
@@ -86,14 +83,13 @@ class _HomeListState extends State<HomeList> {
     return Scaffold(
         body: CustomScrollView(
       slivers: [
-   
         const SliverToBoxAdapter(
           child: Padding(
             padding: EdgeInsets.only(
               left: 15,
               top: 20,
             ),
-            child: Text('Trending',
+            child: Text('Trendings',
                 style: TextStyle(fontSize: 24, fontWeight: FontWeight.w500)),
           ),
         ),

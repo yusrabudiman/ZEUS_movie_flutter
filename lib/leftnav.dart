@@ -32,6 +32,7 @@ class _leftNavbarAksiState extends State<leftNavbarAksi> {
             title: Text('Settings'),
             onTap: () => null,
           ),
+          Divider()
         ],
       ),
     );
