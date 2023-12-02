@@ -2,6 +2,7 @@ import 'package:dio/dio.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:spons/formpage/flutter_login.dart';
+import 'package:spons/leftnav.dart';
 
 import '../detailpage/DetailMovie.dart';
 
@@ -15,7 +16,7 @@ class HomeList extends StatefulWidget {
 class _HomeListState extends State<HomeList> {
   double kSpacing = 14.00;
   BorderRadius kBorderRadius = BorderRadius.circular(20.00);
-  String? email = FirebaseAuth.instance.currentUser!.email;
+  
 
   late Stream<List<Map<String, dynamic>>> _trendings;
   late Stream<List<Map<String, dynamic>>> _movies;
@@ -30,12 +31,7 @@ class _HomeListState extends State<HomeList> {
     _nowPlaying = getNowPlaying().asBroadcastStream();
   }
 
-  Future<void> _signOut() async {
-    await FirebaseAuth.instance.signOut();
-    Navigator.of(context).pushReplacement(MaterialPageRoute(
-      builder: (context) => LoginScreen(),
-    ));
-  }
+
 
   Stream<List<Map<String, dynamic>>> getTrending() {
     return Stream.fromFuture(_fetchTrending());
@@ -90,27 +86,7 @@ class _HomeListState extends State<HomeList> {
     return Scaffold(
         body: CustomScrollView(
       slivers: [
-        SliverAppBar(
-          title: Text(
-            "welcome: $email",
-            style: TextStyle(fontSize: 16),
-          ),
-          centerTitle: true,
-          expandedHeight: 120,
-          elevation: 0,
-          pinned: true,
-          actions: <Widget>[
-            IconButton(
-              onPressed: () {
-                _signOut();
-              },
-              icon: const Icon(
-                Icons.logout_sharp,
-              ),
-              tooltip: 'Logout',
-            )
-          ],
-        ),
+   
         const SliverToBoxAdapter(
           child: Padding(
             padding: EdgeInsets.only(

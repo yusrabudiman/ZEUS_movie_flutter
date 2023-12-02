@@ -1,5 +1,6 @@
 import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
+import 'package:spons/leftnav.dart';
 
 import '../detailpage/DetailMovie.dart';
 
@@ -35,22 +36,11 @@ class _appSearchState extends State<appSearch> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      
         body: Container(
       child: CustomScrollView(
         slivers: [
-          SliverAppBar(
-            title: Text('Search'),
-            centerTitle: true,
-            pinned: true,
-          ),
-          SliverAppBar(
-            flexibleSpace: Padding(
-              padding: EdgeInsets.only(
-                left: 15,
-                right: 15,
-              ),
-            ),
-          ),
+
           SliverPadding(
             padding: EdgeInsets.all(16.0),
             sliver: SliverToBoxAdapter(

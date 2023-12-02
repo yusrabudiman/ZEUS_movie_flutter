@@ -1,4 +1,7 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:spons/formpage/flutter_login.dart';
+import 'package:spons/leftnav.dart';
 import 'package:spons/navigation/home.dart';
 import 'package:spons/navigation/search.dart';
 import 'package:spons/navigation/watchlist.dart';
@@ -11,9 +14,23 @@ class MyWidget extends StatefulWidget {
 }
 
 class _MyWidgetState extends State<MyWidget> {
-  String title = "Home";
-
+  String? email;
+  String title = "welcome";
   int _indexNavigation = 0;
+
+  @override
+  void initState() {
+    super.initState();
+    email = FirebaseAuth.instance.currentUser?.email;
+    title = "welcome: ${email ?? 'No User'}";
+  }
+
+  Future<void> _signOut() async {
+    await FirebaseAuth.instance.signOut();
+    Navigator.of(context).pushReplacement(MaterialPageRoute(
+      builder: (context) => LoginScreen(),
+    ));
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -28,6 +45,26 @@ class _MyWidgetState extends State<MyWidget> {
     }
 
     return Scaffold(
+      drawer: leftNavbarAksi(),
+      appBar: AppBar(
+        title: Text(
+          title,
+          style: TextStyle(fontSize: 18),
+        ),
+        centerTitle: true,
+        elevation: 0,
+        actions: <Widget>[
+          IconButton(
+            onPressed: () {
+              _signOut();
+            },
+            icon: const Icon(
+              Icons.logout_sharp,
+            ),
+            tooltip: 'Logout',
+          )
+        ],
+      ),
       body: _widgetNavigation(),
       bottomNavigationBar: BottomNavigationBar(
         currentIndex: _indexNavigation,
@@ -39,7 +76,7 @@ class _MyWidgetState extends State<MyWidget> {
         ],
         onTap: (value) {
           if (value == 0) {
-            title = "Home";
+            title = "welcome: $email";
           }
           if (value == 1) {
             title = "Search";

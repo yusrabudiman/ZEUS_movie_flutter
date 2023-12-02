@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:spons/detailpage/DetailMovie.dart';
+import 'package:spons/leftnav.dart';
 
 import '../provider/watchlist_provider.dart';
 
@@ -18,10 +19,6 @@ class _WatchlistState extends State<Watchlist> {
   Widget build(BuildContext context) {
     final prov = Provider.of<WatchlistProvider>(context);
     return Scaffold(
-      appBar: AppBar(
-        title: Text('Watchlist'),
-        centerTitle: true,
-      ),
       body: prov.watchlist.isEmpty
           ? Center(
               child: Text(
