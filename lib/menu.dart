@@ -1,6 +1,7 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
-import 'package:spons/formpage/flutter_login.dart';
+import 'package:spons/formpage/flutter_form_log_sign.dart';
+
 import 'package:spons/leftnav.dart';
 import 'package:spons/navigation/home.dart';
 import 'package:spons/navigation/search.dart';
@@ -28,7 +29,7 @@ class _MyWidgetState extends State<MyWidget> {
   Future<void> _signOut() async {
     await FirebaseAuth.instance.signOut();
     Navigator.of(context).pushReplacement(MaterialPageRoute(
-      builder: (context) => LoginScreen(),
+      builder: (context) => LoginForm(),
     ));
   }
 

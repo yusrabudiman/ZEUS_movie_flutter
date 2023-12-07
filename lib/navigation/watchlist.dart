@@ -64,8 +64,7 @@ class _WatchlistState extends State<Watchlist> {
                                                 'assets/not_available.png');
                                           },
                                         )
-                                      : Image.asset(
-                                          'assets/not_available.png'), // Display the asset image when the image path is null
+                                      : Image.asset('assets/not_available.png'),
                                 ),
                                 Text(
                                   '${prov.watchlist[index]['original_title']}',

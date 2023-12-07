@@ -1,7 +1,7 @@
 import 'package:dio/dio.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
-import 'package:spons/formpage/flutter_login.dart';
+
 import 'package:spons/leftnav.dart';
 
 import '../detailpage/DetailMovie.dart';
@@ -277,7 +277,7 @@ class _HomeListState extends State<HomeList> {
                   } else if (snapshot.hasError) {
                     return Text('Error fetching data');
                   } else {
-                    return CircularProgressIndicator();
+                    return Center(child: CircularProgressIndicator());
                   }
                 },
               ),
