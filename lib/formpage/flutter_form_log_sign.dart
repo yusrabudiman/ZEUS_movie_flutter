@@ -4,6 +4,10 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:spons/menu.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:firebase_storage/firebase_storage.dart';
+import 'package:permission_handler/permission_handler.dart';
+import 'package:file_picker/file_picker.dart';
+
+import 'package:flutter_image_compress/flutter_image_compress.dart';
 import 'dart:io';
 
 import 'package:firebase_database/firebase_database.dart';
@@ -18,8 +22,12 @@ class _LoginFormState extends State<LoginForm> {
   final _formKeySignin = GlobalKey<FormBuilderState>();
   final FirebaseAuth _auth = FirebaseAuth.instance;
 
+  final ImagePicker _picker = ImagePicker();
+  XFile? _image;
+  String? _imageUrl;
+
   void someFunction() async {
-    await Future.delayed(Duration(seconds: 2));
+    await Future.delayed(Duration(seconds: 4));
     if (mounted) {
       print(context.widget);
     }
@@ -42,6 +50,17 @@ class _LoginFormState extends State<LoginForm> {
     }
     return null;
   };
+
+  Future<String> uploadUserPhoto(String filePath, String userId) async {
+    final storageRef = FirebaseStorage.instance.ref();
+    final fileRef = storageRef.child('users/$userId');
+    await fileRef.putFile(File(filePath));
+
+    // Get the download URL of the uploaded photo
+    final photoUrl = await fileRef.getDownloadURL();
+
+    return photoUrl;
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -88,7 +107,7 @@ class _LoginFormState extends State<LoginForm> {
                     ),
                     SizedBox(height: 10),
                     ElevatedButton(
-                      child: Text("Submit"),
+                      child: Text("Sign In"),
                       onPressed: () async {
                         _formKeySignin.currentState?.save();
                         if (_formKeySignin.currentState?.validate() == true) {
@@ -166,15 +185,72 @@ class _LoginFormState extends State<LoginForm> {
                         validator: validator,
                       ),
                       SizedBox(height: 10),
+                      Card(
+                        child: Column(
+                          children: <Widget>[
+                            (_image != null)
+                                ? CircleAvatar(
+                                    radius: 70.0,
+                                    backgroundImage:
+                                        FileImage(File(_image!.path)),
+                                  )
+                                : Image.asset(
+                                    'assets/profile_vector.jpg',
+                                    width: 100,
+                                  ),
+                            ElevatedButton.icon(
+                              icon: Icon(Icons.photo_camera),
+                              label: Text('Take Photo'),
+                              onPressed: () async {
+                                if (await _requestPermissions(
+                                    Permission.camera, 'Camera', context)) {
+                                  final XFile? photo = await _picker.pickImage(
+                                      source: ImageSource.camera);
+                                  if (photo == null) {
+                                    return;
+                                  }
+                                  final filePath = photo.path;
+                                  final compressedImage =
+                                      await FlutterImageCompress
+                                          .compressAndGetFile(
+                                    filePath,
+                                    filePath + '_compressed.jpg',
+                                    quality: 15,
+                                  );
+                                  setState(() {
+                                    _image = XFile(compressedImage!.path);
+                                    _imageUrl = compressedImage.path;
+                                  });
+                                }
+                              },
+                            ),
+                            ElevatedButton.icon(
+                              icon: Icon(Icons.photo_library),
+                              label: Text('Select Photo'),
+                              onPressed: () async {
+                                final XFile? photo = await _picker.pickImage(
+                                    source: ImageSource.gallery);
+                                if (photo == null) {
+                                  return;
+                                }
+                                final filePath = photo.path;
 
-                      // FormBuilderTextField(
-                      //   name: 'photoProfile',
-                      //   decoration: InputDecoration(
-                      //     labelText: 'Profile Picture URL',
-                      //     border: OutlineInputBorder(),
-                      //   ),
-                      //   validator: validator,
-                      // ),
+                                final compressedImage =
+                                    await FlutterImageCompress
+                                        .compressAndGetFile(
+                                  filePath,
+                                  filePath + '_compressed.jpg',
+                                  quality: 10,
+                                );
+                                setState(() {
+                                  _image = XFile(compressedImage!.path);
+                                  _imageUrl = compressedImage.path;
+                                });
+                              },
+                            ),
+                          ],
+                        ),
+                      ),
                       SizedBox(height: 10),
                       FormBuilderTextField(
                         name: 'bio',
@@ -186,7 +262,7 @@ class _LoginFormState extends State<LoginForm> {
                       ),
                       SizedBox(height: 10),
                       ElevatedButton(
-                        child: Text("Submit"),
+                        child: Text("Sign Up"),
                         onPressed: () async {
                           _formKeySignUp.currentState?.save();
                           if (_formKeySignUp.currentState?.validate() == true) {
@@ -199,21 +275,31 @@ class _LoginFormState extends State<LoginForm> {
                                 password: _formKeySignUp
                                     .currentState?.fields['password']?.value,
                               );
+                              final photoUrl = await uploadUserPhoto(
+                                  _imageUrl!, userCredential.user!.uid);
 
-                              // Save the user data to Firebase Realtime Database
                               DatabaseReference dbRef = FirebaseDatabase
                                   .instance
                                   .reference()
                                   .child('users')
                                   .child(userCredential.user!.uid);
-                              await dbRef.set({
-                                'realName': _formKeySignUp
-                                    .currentState?.fields['realName']?.value,
-                                'photoProfile': _formKeySignUp.currentState
-                                    ?.fields['photoProfile']?.value,
-                                'bio': _formKeySignUp
-                                    .currentState?.fields['bio']?.value,
-                              });
+
+                              print(
+                                  'Real Name: ${_formKeySignUp.currentState?.fields['realName']?.value}');
+                              print(
+                                  'Bio: ${_formKeySignUp.currentState?.fields['bio']?.value}');
+
+                              await dbRef.set(
+                                {
+                                  'realName': _formKeySignUp.currentState
+                                          ?.fields['realName']?.value ??
+                                      "No name provided",
+                                  'photoProfile': photoUrl,
+                                  'bio': _formKeySignUp
+                                          .currentState?.fields['bio']?.value ??
+                                      "No bio provided",
+                                },
+                              );
 
                               // Navigate to MyWidget after successful sign up
                               Navigator.pushReplacement(
@@ -243,5 +329,80 @@ class _LoginFormState extends State<LoginForm> {
         ),
       ),
     );
+  }
+}
+
+int _denyCount = 0;
+Future<bool> _requestPermissions(
+    Permission permission, String permissionName, BuildContext context) async {
+  if (await permission.status.isGranted) {
+    return true;
+  } else {
+    if (_denyCount >= 3) {
+      showDialog(
+        context: context,
+        builder: (BuildContext context) {
+          return AlertDialog(
+            title: Text('Permission Denied'),
+            content: Text(
+                'You have denied permission $_denyCount times. Go to settings to enable permissions.'),
+            actions: <Widget>[
+              TextButton(
+                child: Text('Open Settings'),
+                onPressed: () {
+                  openAppSettings();
+                },
+              ),
+            ],
+          );
+        },
+      );
+      return false;
+    } else {
+      showDialog(
+        context: context,
+        builder: (BuildContext context) {
+          return AlertDialog(
+            title: Text('Permission Required'),
+            content: Text(
+                'This app requires the $permissionName permission to function properly.'),
+            actions: <Widget>[
+              TextButton(
+                child: Text('Reject'),
+                onPressed: () {
+                  Navigator.of(context).pop();
+                  _denyCount++;
+                },
+              ),
+              TextButton(
+                child: Text('Agree'),
+                onPressed: () async {
+                  Navigator.of(context).pop();
+                  var status = await permission.request();
+                  if (status.isGranted) {
+                    _navigate(permissionName, context);
+                  } else if (status.isPermanentlyDenied) {
+                    openAppSettings();
+                  }
+                },
+              ),
+            ],
+          );
+        },
+      );
+    }
+  }
+  return false;
+}
+
+void _navigate(String permissionName, BuildContext context) async {
+  final ImagePicker _picker = ImagePicker();
+  if (permissionName == 'Camera') {
+    if (await _requestPermissions(Permission.camera, 'Camera', context)) {
+      final XFile? photo = await _picker.pickImage(source: ImageSource.camera);
+      if (photo != null) {
+        print('Camera accessed: ${photo.path}');
+      }
+    }
   }
 }

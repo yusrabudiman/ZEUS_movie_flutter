@@ -18,6 +18,7 @@ class _leftNavbarAksiState extends State<leftNavbarAksi> {
   String? email = FirebaseAuth.instance.currentUser?.email;
   String? realName;
   String? photoUrl;
+  String? bio;
 
   @override
   void initState() {
@@ -63,6 +64,11 @@ class _leftNavbarAksiState extends State<leftNavbarAksi> {
   }
 
   @override
+  void dispose() {
+    super.dispose();
+  }
+
+  @override
   Widget build(BuildContext context) {
     return Drawer(
       child: ListView(
@@ -73,7 +79,7 @@ class _leftNavbarAksiState extends State<leftNavbarAksi> {
                   photoUrl != null ? NetworkImage(photoUrl!) : null,
             ),
             accountName: Text(realName ?? 'Loading...'),
-            accountEmail: Text('$email'),
+            accountEmail: Text(email ?? 'None'),
             decoration: BoxDecoration(
               color: Color.fromARGB(255, 17, 41, 49),
             ),
