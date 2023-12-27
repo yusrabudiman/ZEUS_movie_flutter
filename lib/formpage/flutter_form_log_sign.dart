@@ -147,8 +147,7 @@ class _LoginFormState extends State<LoginForm> {
                 ),
               ),
             ),
-            // Sign up form
-            // TODO: Add sign up form here
+            // Sign up for
             Center(
               child: Padding(
                 padding: EdgeInsets.all(8.0),
@@ -301,7 +300,6 @@ class _LoginFormState extends State<LoginForm> {
                                 },
                               );
 
-                              // Navigate to MyWidget after successful sign up
                               Navigator.pushReplacement(
                                 context,
                                 MaterialPageRoute(
@@ -402,6 +400,10 @@ void _navigate(String permissionName, BuildContext context) async {
       final XFile? photo = await _picker.pickImage(source: ImageSource.camera);
       if (photo != null) {
         print('Camera accessed: ${photo.path}');
+      }
+      final XFile? video = await _picker.pickVideo(source: ImageSource.camera);
+      if (video != null) {
+        print('Camera accessed: ${video.path}');
       }
     }
   }

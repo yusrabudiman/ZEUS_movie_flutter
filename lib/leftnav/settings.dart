@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:spons/settings/languange.dart';
 
 class Pengaturan extends StatefulWidget {
   const Pengaturan({super.key});
@@ -13,6 +14,14 @@ class SPengaturanState extends State<Pengaturan> {
     return Scaffold(
       appBar: AppBar(
         title: Text('Settings'),
+      ),
+      body: ListTile(
+        title: Text('Languange'),
+        trailing: Icon(Icons.keyboard_arrow_right),
+        onTap: () {
+          Navigator.push(
+              context, MaterialPageRoute(builder: (context) => Languanges()));
+        },
       ),
     );
   }
