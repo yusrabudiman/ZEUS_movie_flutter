@@ -69,8 +69,13 @@ class _appSearchState extends State<appSearch> {
                         .isEmpty
                     ? SliverFillRemaining(
                         child: Center(
-                            child:
-                                Text(MyLocalization.of(context)!.descSearch)),
+                            child: Padding(
+                          padding: const EdgeInsets.all(8.0),
+                          child: Text(
+                            MyLocalization.of(context)!.descSearch,
+                            textAlign: TextAlign.center,
+                          ),
+                        )),
                       )
                     : SliverList(
                         delegate: SliverChildBuilderDelegate(
