@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:provider/provider.dart';
+import 'package:spons/l10n/my_localization.dart';
 
 import '../provider/watchlist_provider.dart';
 
@@ -77,7 +78,7 @@ class _DetailMoviesState extends State<DetailMovies> {
                         icon: prov.isMovieInWatchlist(widget.movie)
                             ? const Icon(Icons.favorite)
                             : const Icon(Icons.favorite_border),
-                        label: const Text("Watchlist"),
+                        label: Text(MyLocalization.of(context)!.favorite),
                       )
                     ],
                   ),
@@ -97,8 +98,8 @@ class _DetailMoviesState extends State<DetailMovies> {
                     indent: 20,
                     endIndent: 20,
                   ),
-                  const Text(
-                    'More information',
+                  Text(
+                    MyLocalization.of(context)!.moreInfo,
                     style: TextStyle(fontWeight: FontWeight.bold, fontSize: 18),
                   ),
                   Padding(
@@ -107,7 +108,7 @@ class _DetailMoviesState extends State<DetailMovies> {
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
                         Text(
-                          "Languange",
+                          MyLocalization.of(context)!.languangeWords,
                         ),
                         Text(
                           "${widget.movie['original_language']}",
@@ -121,7 +122,7 @@ class _DetailMoviesState extends State<DetailMovies> {
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
                         Text(
-                          "Rating",
+                          MyLocalization.of(context)!.rating,
                         ),
                         Text(
                           "${widget.movie['vote_average'].toStringAsFixed(1)}",
@@ -135,7 +136,7 @@ class _DetailMoviesState extends State<DetailMovies> {
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
                         Text(
-                          "Voting",
+                          MyLocalization.of(context)!.voting,
                         ),
                         Text(
                           "${formatter.format(widget.movie['vote_count'])}",
@@ -149,7 +150,7 @@ class _DetailMoviesState extends State<DetailMovies> {
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
                         Text(
-                          "Popularity",
+                          MyLocalization.of(context)!.popularity,
                         ),
                         Text(widget.movie['popularity']
                             .toString()
@@ -163,7 +164,7 @@ class _DetailMoviesState extends State<DetailMovies> {
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
                         Text(
-                          "Rated For",
+                          MyLocalization.of(context)!.ratedFor,
                         ),
                         Text(widget.movie['adult']
                             ? "17+ Mature"

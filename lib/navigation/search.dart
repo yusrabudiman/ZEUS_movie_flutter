@@ -1,5 +1,6 @@
 import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
+import 'package:spons/l10n/my_localization.dart';
 import 'package:spons/leftnav.dart';
 
 import '../detailpage/DetailMovie.dart';
@@ -52,9 +53,9 @@ class _appSearchState extends State<appSearch> {
                 },
                 controller: controller,
                 decoration: InputDecoration(
-                    labelText: "Search Movies",
+                    labelText: MyLocalization.of(context)!.search,
                     prefixIcon: Icon(Icons.search),
-                    hintText: "Try: Oppenheimer"),
+                    hintText: "Oppenheimer"),
               ),
             ),
           ),
@@ -69,7 +70,7 @@ class _appSearchState extends State<appSearch> {
                     ? SliverFillRemaining(
                         child: Center(
                             child:
-                                Text('Try feature search, if you have idea')),
+                                Text(MyLocalization.of(context)!.descSearch)),
                       )
                     : SliverList(
                         delegate: SliverChildBuilderDelegate(

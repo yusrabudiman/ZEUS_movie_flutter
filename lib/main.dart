@@ -5,8 +5,9 @@ import 'package:flutter/services.dart';
 import 'package:provider/provider.dart';
 import 'package:spons/formpage/flutter_form_log_sign.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
-import 'package:flutter_gen/gen_l10n/app_localizations.dart';
-import 'package:spons/l10n/l10n.dart';
+
+import 'package:spons/l10n/my_localization.dart';
+import 'package:spons/l10n/my_localization_delegate.dart';
 
 import 'package:spons/menu.dart';
 import 'package:spons/provider/watchlist_provider.dart';
@@ -21,19 +22,26 @@ Future<void> main() async {
 
 class MyApp extends StatelessWidget {
   final FirebaseAuth _auth = FirebaseAuth.instance;
+  MyLocalizationDelegate _myLocalizationDelegate =
+      MyLocalizationDelegate(Locale('en', 'US'));
 
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
       localizationsDelegates: [
-        AppLocalizations.delegate, // Add this line
+        // Add this line
         GlobalMaterialLocalizations.delegate,
         GlobalWidgetsLocalizations.delegate,
         GlobalCupertinoLocalizations.delegate,
+        _myLocalizationDelegate
       ],
-      supportedLocales: L10n.all,
+      supportedLocales: [
+        Locale('en', 'US'),
+        Locale('id', 'ID'),
+      ],
       theme: ThemeData(useMaterial3: true, brightness: Brightness.dark),
       debugShowCheckedModeBanner: false,
+      // home: TestingBahasa(),
       home: StreamBuilder<User?>(
         stream: _auth.authStateChanges(),
         builder: (BuildContext context, AsyncSnapshot<User?> snapshot) {
@@ -51,3 +59,46 @@ class MyApp extends StatelessWidget {
     );
   }
 }
+
+// class TestingBahasa extends StatefulWidget {
+//   @override
+//   _TestingBahasaState createState() => _TestingBahasaState();
+// }
+
+// class _TestingBahasaState extends State<TestingBahasa> {
+//   @override
+//   Widget build(BuildContext context) {
+//     return Scaffold(
+//       appBar: AppBar(
+//         title: Text('Flutter Localization'),
+//       ),
+//       body: Padding(
+//         padding: const EdgeInsets.symmetric(horizontal: 16.0),
+//         child: Center(
+//           child: Row(
+//             mainAxisAlignment: MainAxisAlignment.spaceBetween,
+//             children: <Widget>[
+//               ElevatedButton(
+//                 child: Text('English'),
+//                 onPressed: () {
+//                   setState(() {
+//                     MyLocalization.load(Locale('en', 'US'));
+//                   });
+//                 },
+//               ),
+//               Text(MyLocalization.of(context)!.helloWorld),
+//               ElevatedButton(
+//                 child: Text('Indonesia'),
+//                 onPressed: () {
+//                   setState(() {
+//                     MyLocalization.load(Locale('id', 'ID'));
+//                   });
+//                 },
+//               ),
+//             ],
+//           ),
+//         ),
+//       ),
+//     );
+//   }
+// }

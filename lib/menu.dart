@@ -1,6 +1,7 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:spons/formpage/flutter_form_log_sign.dart';
+import 'package:spons/l10n/my_localization.dart';
 
 import 'package:spons/leftnav.dart';
 import 'package:spons/navigation/home.dart';
@@ -22,8 +23,9 @@ class _MyWidgetState extends State<MyWidget> {
   @override
   void initState() {
     super.initState();
+
     email = FirebaseAuth.instance.currentUser?.email;
-    title = "welcome: ${email ?? 'No User'}";
+    title = "${email ?? 'No User'}";
   }
 
   Future<void> _signOut() async {
@@ -77,13 +79,13 @@ class _MyWidgetState extends State<MyWidget> {
         ],
         onTap: (value) {
           if (value == 0) {
-            title = "welcome: $email";
+            title = "${email ?? 'No User'}"; //welcome: $email
           }
           if (value == 1) {
-            title = "Search";
+            title = MyLocalization.of(context)!.search;
           }
           if (value == 2) {
-            title = "Watchlist";
+            title = MyLocalization.of(context)!.watchlist;
           }
           setState(() {
             _indexNavigation = value;

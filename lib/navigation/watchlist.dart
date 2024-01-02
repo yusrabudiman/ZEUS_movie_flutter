@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:spons/detailpage/DetailMovie.dart';
+import 'package:spons/l10n/my_localization.dart';
 import 'package:spons/leftnav.dart';
 
 import '../provider/watchlist_provider.dart';
@@ -22,7 +23,7 @@ class _WatchlistState extends State<Watchlist> {
       body: prov.watchlist.isEmpty
           ? Center(
               child: Text(
-              'watchlist empty ?\ntry features favorite in the detail movie if you like',
+              MyLocalization.of(context)!.descWatchlist,
               textAlign: TextAlign.center,
             ))
           : CustomScrollView(

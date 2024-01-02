@@ -1,6 +1,7 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:spons/l10n/my_localization.dart';
 import 'package:spons/leftnav/profile.dart';
 import 'package:spons/leftnav/settings.dart';
 import 'package:firebase_database/firebase_database.dart';
@@ -86,7 +87,7 @@ class _leftNavbarAksiState extends State<leftNavbarAksi> {
           ),
           ListTile(
             leading: Icon(Icons.people),
-            title: Text('Profile'),
+            title: Text(MyLocalization.of(context)!.profile),
             onTap: () => {
               Navigator.push(
                   context, MaterialPageRoute(builder: (context) => Profiles()))
@@ -95,7 +96,7 @@ class _leftNavbarAksiState extends State<leftNavbarAksi> {
           Divider(),
           ListTile(
             leading: Icon(Icons.settings),
-            title: Text('Settings'),
+            title: Text(MyLocalization.of(context)!.settings),
             onTap: () {
               Navigator.push(context,
                   MaterialPageRoute(builder: (context) => Pengaturan()));

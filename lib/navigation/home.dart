@@ -1,6 +1,7 @@
 import 'package:dio/dio.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:spons/l10n/my_localization.dart';
 
 import 'package:spons/leftnav.dart';
 
@@ -83,13 +84,13 @@ class _HomeListState extends State<HomeList> {
     return Scaffold(
         body: CustomScrollView(
       slivers: [
-        const SliverToBoxAdapter(
+        SliverToBoxAdapter(
           child: Padding(
             padding: EdgeInsets.only(
               left: 15,
               top: 20,
             ),
-            child: Text('Trendings',
+            child: Text(MyLocalization.of(context)!.trending,
                 style: TextStyle(fontSize: 24, fontWeight: FontWeight.w500)),
           ),
         ),
@@ -150,13 +151,13 @@ class _HomeListState extends State<HomeList> {
           //
         ),
 
-        const SliverToBoxAdapter(
+        SliverToBoxAdapter(
           child: Padding(
             padding: EdgeInsets.only(
               left: 15,
               bottom: 5,
             ),
-            child: Text('Recommended',
+            child: Text(MyLocalization.of(context)!.recommended,
                 style: TextStyle(fontSize: 24, fontWeight: FontWeight.w500)),
           ),
         ),
@@ -218,13 +219,13 @@ class _HomeListState extends State<HomeList> {
             }
           },
         ),
-        const SliverToBoxAdapter(
+        SliverToBoxAdapter(
           child: Padding(
             padding: EdgeInsets.only(
               left: 15,
               bottom: 5,
             ),
-            child: Text('Now Playing',
+            child: Text(MyLocalization.of(context)!.nowPlaying,
                 style: TextStyle(fontSize: 24, fontWeight: FontWeight.w500)),
           ),
         ),

@@ -1,4 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:shared_preferences/shared_preferences.dart';
+import 'package:spons/l10n/my_localization.dart';
+
+import '../l10n/my_localization_delegate.dart';
 
 class Languanges extends StatefulWidget {
   const Languanges({super.key});
@@ -8,55 +12,43 @@ class Languanges extends StatefulWidget {
 }
 
 class _LanguangesState extends State<Languanges> {
-  String _selectedLocale = 'Indonesia';
+  SharedPreferences? prefs;
+  MyLocalizationDelegate _myLocalizationDelegate =
+      MyLocalizationDelegate(Locale('null'));
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('Languange'),
+        title: Text(MyLocalization.of(context)!.languangeWords),
       ),
       body: Column(
         children: [
-          RadioListTile(
-            value: 'en',
-            groupValue: _selectedLocale,
-            onChanged: ((value) {
-              setState(() {
-                _selectedLocale = value!;
-              });
-            }),
+          RadioListTile<String>(
             title: const Text('English'),
-          ),
-          RadioListTile(
-            value: 'Indonesia',
-            groupValue: _selectedLocale,
-            onChanged: ((value) {
+            value: 'en',
+            groupValue: _myLocalizationDelegate.currentLocale.languageCode,
+            onChanged: (String? value) {
               setState(() {
-                _selectedLocale = value!;
+                Locale newLocale = Locale(value!, 'US');
+                MyLocalization.load(newLocale);
+                _myLocalizationDelegate = MyLocalizationDelegate(newLocale);
+                _myLocalizationDelegate.saveNewLocale(newLocale);
               });
-            }),
+            },
+          ),
+          RadioListTile<String>(
             title: const Text('Indonesia'),
-          ),
-          RadioListTile(
-            value: 'Chinese Traditional',
-            groupValue: _selectedLocale,
-            onChanged: ((value) {
+            value: 'id',
+            groupValue: _myLocalizationDelegate.currentLocale.languageCode,
+            onChanged: (String? value) {
               setState(() {
-                _selectedLocale = value!;
+                Locale newLocale = Locale(value!, 'ID');
+                MyLocalization.load(newLocale);
+                _myLocalizationDelegate = MyLocalizationDelegate(newLocale);
+                _myLocalizationDelegate.saveNewLocale(newLocale);
               });
-            }),
-            title: const Text('Chinese Traditional'),
-          ),
-          RadioListTile(
-            value: 'Es',
-            groupValue: _selectedLocale,
-            onChanged: ((value) {
-              setState(() {
-                _selectedLocale = value!;
-              });
-            }),
-            title: const Text('Espanol'),
+            },
           ),
         ],
       ),
