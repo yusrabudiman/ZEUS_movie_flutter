@@ -10,11 +10,13 @@ import 'package:spons/l10n/my_localization.dart';
 import 'package:spons/l10n/my_localization_delegate.dart';
 
 import 'package:spons/menu.dart';
+import 'package:spons/api/firebase_api.dart';
 import 'package:spons/provider/watchlist_provider.dart';
 
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await Firebase.initializeApp();
+  await FirebaseApi().initNotifications();
   runApp(MultiProvider(providers: [
     ChangeNotifierProvider(create: (_) => WatchlistProvider()),
   ], child: MyApp()));
