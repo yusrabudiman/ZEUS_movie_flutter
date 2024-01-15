@@ -55,6 +55,7 @@ dependencies:
   flutter_localizations:
     sdk: flutter
   firebase_messaging: ^14.7.9
+  google_mobile_ads: ^4.0.0
 
 
 

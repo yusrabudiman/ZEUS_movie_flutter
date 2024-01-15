@@ -43,7 +43,6 @@ class MyApp extends StatelessWidget {
       ],
       theme: ThemeData(useMaterial3: true, brightness: Brightness.dark),
       debugShowCheckedModeBanner: false,
-      // home: TestingBahasa(),
       home: StreamBuilder<User?>(
         stream: _auth.authStateChanges(),
         builder: (BuildContext context, AsyncSnapshot<User?> snapshot) {
@@ -61,46 +60,3 @@ class MyApp extends StatelessWidget {
     );
   }
 }
-
-// class TestingBahasa extends StatefulWidget {
-//   @override
-//   _TestingBahasaState createState() => _TestingBahasaState();
-// }
-
-// class _TestingBahasaState extends State<TestingBahasa> {
-//   @override
-//   Widget build(BuildContext context) {
-//     return Scaffold(
-//       appBar: AppBar(
-//         title: Text('Flutter Localization'),
-//       ),
-//       body: Padding(
-//         padding: const EdgeInsets.symmetric(horizontal: 16.0),
-//         child: Center(
-//           child: Row(
-//             mainAxisAlignment: MainAxisAlignment.spaceBetween,
-//             children: <Widget>[
-//               ElevatedButton(
-//                 child: Text('English'),
-//                 onPressed: () {
-//                   setState(() {
-//                     MyLocalization.load(Locale('en', 'US'));
-//                   });
-//                 },
-//               ),
-//               Text(MyLocalization.of(context)!.helloWorld),
-//               ElevatedButton(
-//                 child: Text('Indonesia'),
-//                 onPressed: () {
-//                   setState(() {
-//                     MyLocalization.load(Locale('id', 'ID'));
-//                   });
-//                 },
-//               ),
-//             ],
-//           ),
-//         ),
-//       ),
-//     );
-//   }
-// }

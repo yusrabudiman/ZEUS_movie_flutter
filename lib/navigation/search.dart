@@ -1,5 +1,6 @@
 import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
+import 'package:google_mobile_ads/google_mobile_ads.dart';
 import 'package:spons/l10n/my_localization.dart';
 import 'package:spons/leftnav.dart';
 
@@ -13,7 +14,15 @@ class appSearch extends StatefulWidget {
 }
 
 class _appSearchState extends State<appSearch> {
-  TextEditingController controller = TextEditingController();
+  int coin = 0; //coin for purchase or only using
+  late BannerAd _bannerAd;
+  bool _isBannerReady = false;
+  bool _isAdEnabled = true;
+
+  late InterstitialAd _interstitialAd;
+  bool _isInterstitialReady = false;
+
+  late TextEditingController controller = TextEditingController();
   String searchString = "";
   late Stream<List<dynamic>> searchData;
 
@@ -30,6 +39,7 @@ class _appSearchState extends State<appSearch> {
   @override
   void initState() {
     super.initState();
+    _loadBannerAd();
     searchString = "";
     searchData = fetchData().asStream();
   }
@@ -71,9 +81,26 @@ class _appSearchState extends State<appSearch> {
                         child: Center(
                             child: Padding(
                           padding: const EdgeInsets.all(8.0),
-                          child: Text(
-                            MyLocalization.of(context)!.descSearch,
-                            textAlign: TextAlign.center,
+                          child: Column(
+                            children: [
+                              Text(
+                                MyLocalization.of(context)!.descSearch,
+                                textAlign: TextAlign.center,
+                              ),
+                              Expanded(
+                                  child: _isBannerReady && _isAdEnabled
+                                      ? Align(
+                                          alignment: Alignment.bottomCenter,
+                                          child: Container(
+                                            width:
+                                                _bannerAd.size.width.toDouble(),
+                                            height: _bannerAd.size.height
+                                                .toDouble(),
+                                            child: AdWidget(ad: _bannerAd),
+                                          ),
+                                        )
+                                      : Container())
+                            ],
                           ),
                         )),
                       )
@@ -121,5 +148,20 @@ class _appSearchState extends State<appSearch> {
         ],
       ),
     ));
+  }
+
+  void _loadBannerAd() {
+    if (_isAdEnabled) {
+      _bannerAd = BannerAd(
+          size: AdSize.banner,
+          adUnitId: 'ca-app-pub-3940256099942544/6300978111',
+          listener: BannerAdListener(onAdLoaded: (_) {
+            setState(() {
+              _isBannerReady = true;
+            });
+          }),
+          request: AdRequest());
+    }
+    _bannerAd.load();
   }
 }
