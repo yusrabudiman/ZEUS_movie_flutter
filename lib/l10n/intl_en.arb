@@ -101,5 +101,17 @@
         "description": "Rated For",
         "type": "text",
         "placeholders": {}
+    },
+    "premiumPier": "Watch Ads",
+    "@premiumPier": {
+        "description": "Watch Ads",
+        "type": "text",
+        "placeholders": {}
+    },
+    "continueWatchAds": "Experience spons ad free. Watch a short Video ad to Remove all the ads for open ads except you close app permanent",
+    "@continueWatchAds": {
+        "description": "Experience spons ad free. Watch a short Video ad to Remove all the ads for open ads except you close app permanent",
+        "type": "text",
+        "placeholders": {}
     }
 }

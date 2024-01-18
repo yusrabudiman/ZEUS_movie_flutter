@@ -155,4 +155,21 @@ class MyLocalization {
       desc: 'Dinilai Untuk', /* Optional */
     );
   }
+
+  String get premiumPier {
+    return Intl.message(
+      'Nonton Iklan',
+      name: 'premiumPier',
+      desc: 'Nonton Iklan',
+    );
+  }
+
+  String get continueWatchAds {
+    return Intl.message(
+      'Pengalaman sponsor iklan gratis. Tonton iklan Video singkat untuk Menghapus semua iklan untuk iklan terbuka kecuali Anda menutup aplikasi secara permanen',
+      name: 'continueWatchAds',
+      desc:
+          'Pengalaman sponsor iklan gratis. Tonton iklan Video singkat untuk Menghapus semua iklan untuk iklan terbuka kecuali Anda menutup aplikasi secara permanen',
+    );
+  }
 }

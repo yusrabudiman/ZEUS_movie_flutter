@@ -1,5 +1,5 @@
 {
-  "@@last_modified": "2024-01-02T16:11:01.775327",
+  "@@last_modified": "2024-01-16T15:03:03.786534",
   "helloWorld": "Hello World",
   "@helloWorld": {
     "description": "Kata Hello World",
@@ -99,6 +99,18 @@
   "ratedFor": "Dinilai Untuk",
   "@ratedFor": {
     "description": "Dinilai Untuk",
+    "type": "text",
+    "placeholders": {}
+  },
+  "premiumPier": "Nonton Iklan",
+  "@premiumPier": {
+    "description": "Nonton Iklan",
+    "type": "text",
+    "placeholders": {}
+  },
+  "continueWatchAds": "Pengalaman sponsor iklan gratis. Tonton iklan Video singkat untuk Menghapus semua iklan untuk iklan terbuka kecuali Anda menutup aplikasi secara permanen",
+  "@continueWatchAds": {
+    "description": "Pengalaman sponsor iklan gratis. Tonton iklan Video singkat untuk Menghapus semua iklan untuk iklan terbuka kecuali Anda menutup aplikasi secara permanen",
     "type": "text",
     "placeholders": {}
   }

@@ -102,5 +102,17 @@
         "description": "Dinilai Untuk",
         "type": "text",
         "placeholders": {}
+    },
+    "premiumPier": "Nonton Iklan",
+    "@premiumPier": {
+        "description": "Nonton Iklan",
+        "type": "text",
+        "placeholders": {}
+    },
+    "continueWatchAds": "Pengalaman sponsor iklan gratis. Tonton iklan Video singkat untuk Menghapus semua iklan untuk iklan terbuka kecuali Anda menutup aplikasi secara permanen",
+    "@continueWatchAds": {
+        "description": "Pengalaman sponsor iklan gratis. Tonton iklan Video singkat untuk Menghapus semua iklan untuk iklan terbuka kecuali Anda menutup aplikasi secara permanen",
+        "type": "text",
+        "placeholders": {}
     }
 }

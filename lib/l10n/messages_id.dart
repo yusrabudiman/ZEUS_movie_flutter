@@ -25,6 +25,8 @@ class MessageLookup extends MessageLookupByLibrary {
       _notInlinedMessages(_notInlinedMessages);
 
   static Map<String, dynamic> _notInlinedMessages(_) => {
+        'continueWatchAds': MessageLookupByLibrary.simpleMessage(
+            'Pengalaman sponsor iklan gratis. Tonton iklan Video singkat untuk Menghapus semua iklan untuk iklan terbuka kecuali Anda menutup aplikasi secara permanen'),
         'descSearch': MessageLookupByLibrary.simpleMessage(
             'Coba fitur pencarian untuk menelusuri film yang kamu pikirkan'),
         'descWatchlist': MessageLookupByLibrary.simpleMessage(
@@ -35,6 +37,7 @@ class MessageLookup extends MessageLookupByLibrary {
         'moreInfo': MessageLookupByLibrary.simpleMessage('Informasi Lanjut'),
         'nowPlaying': MessageLookupByLibrary.simpleMessage('Sedang Tayang'),
         'popularity': MessageLookupByLibrary.simpleMessage('Popularitas'),
+        'premiumPier': MessageLookupByLibrary.simpleMessage('Nonton Iklan'),
         'profile': MessageLookupByLibrary.simpleMessage('Profil'),
         'ratedFor': MessageLookupByLibrary.simpleMessage('Dinilai Untuk'),
         'rating': MessageLookupByLibrary.simpleMessage('Nilai Film'),

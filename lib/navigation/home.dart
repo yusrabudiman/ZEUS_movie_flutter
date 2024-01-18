@@ -1,6 +1,10 @@
+import 'dart:io';
+
 import 'package:dio/dio.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:google_mobile_ads/google_mobile_ads.dart';
+
 import 'package:spons/l10n/my_localization.dart';
 
 import 'package:spons/leftnav.dart';
@@ -22,6 +26,10 @@ class _HomeListState extends State<HomeList> {
   late Stream<List<Map<String, dynamic>>> _movies;
   late Stream<List<Map<String, dynamic>>> _nowPlaying;
 
+  InterstitialAd? _interstitialAd;
+
+  bool _isInterstitialReady = false;
+
   @override
   void initState() {
     super.initState();
@@ -29,6 +37,42 @@ class _HomeListState extends State<HomeList> {
     _movies = getMovies().asBroadcastStream();
 
     _nowPlaying = getNowPlaying().asBroadcastStream();
+    _loadInterstitialAd(context);
+  }
+
+  void _loadInterstitialAd(BuildContext context,
+      [Map<String, dynamic>? movie, Function? onAdReady]) {
+    InterstitialAd.load(
+        adUnitId: 'ca-app-pub-3940256099942544/1033173712',
+        request: AdRequest(),
+        adLoadCallback: InterstitialAdLoadCallback(
+          onAdLoaded: (ad) {
+            ad.fullScreenContentCallback = FullScreenContentCallback(
+              onAdDismissedFullScreenContent: (ad) {
+                ad.dispose();
+                if (movie != null) {
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                      builder: (context) => DetailMovies(
+                        movie: movie,
+                      ),
+                    ),
+                  );
+                }
+              },
+            );
+            _isInterstitialReady = true;
+            _interstitialAd = ad;
+            if (onAdReady != null) {
+              onAdReady();
+            }
+          },
+          onAdFailedToLoad: (err) {
+            _isInterstitialReady = false;
+            _interstitialAd?.dispose();
+          },
+        ));
   }
 
   Stream<List<Map<String, dynamic>>> getTrending() {
@@ -113,11 +157,21 @@ class _HomeListState extends State<HomeList> {
                             elevation: 20,
                             child: InkWell(
                               onTap: () {
-                                Navigator.push(
-                                    context,
-                                    MaterialPageRoute(
-                                        builder: (context) => DetailMovies(
-                                            movie: snapshot.data![index])));
+                                if (_isInterstitialReady = false) {
+                                  Navigator.push(
+                                      context,
+                                      MaterialPageRoute(
+                                          builder: (context) => DetailMovies(
+                                                movie: snapshot.data![index],
+                                              )));
+                                } else {
+                                  _loadInterstitialAd(
+                                      context, snapshot.data![index], () {
+                                    if (_isInterstitialReady) {
+                                      _interstitialAd?.show();
+                                    }
+                                  });
+                                }
                               },
                               child: Column(
                                 children: [
@@ -248,12 +302,12 @@ class _HomeListState extends State<HomeList> {
                             elevation: 20,
                             child: InkWell(
                               onTap: () {
-                                Navigator.push(
-                                    context,
-                                    MaterialPageRoute(
-                                        builder: (context) => DetailMovies(
-                                              movie: snapshot.data![index],
-                                            )));
+                                _loadInterstitialAd(
+                                    context, snapshot.data![index], () {
+                                  if (_isInterstitialReady) {
+                                    _interstitialAd?.show();
+                                  }
+                                });
                               },
                               child: Column(
                                 children: [

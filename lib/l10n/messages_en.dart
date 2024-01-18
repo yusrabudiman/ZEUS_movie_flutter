@@ -25,7 +25,8 @@ class MessageLookup extends MessageLookupByLibrary {
   final Map<String, dynamic> messages = _notInlinedMessages(_notInlinedMessages);
 
   static Map<String, dynamic> _notInlinedMessages(_) => {
-      'descSearch': MessageLookupByLibrary.simpleMessage('Try the search feature to browse the movies you have in mind'),
+      'continueWatchAds': MessageLookupByLibrary.simpleMessage('Experience spons ad free. Watch a short Video ad to Remove all the ads for open ads except you close app permanent'),
+    'descSearch': MessageLookupByLibrary.simpleMessage('Try the search feature to browse the movies you have in mind'),
     'descWatchlist': MessageLookupByLibrary.simpleMessage('favorites movie is empty ?\n try feature favorites in the detail movie add movie with button favorites'),
     'favorite': MessageLookupByLibrary.simpleMessage('Add'),
     'helloWorld': MessageLookupByLibrary.simpleMessage('Hello World'),
@@ -33,6 +34,7 @@ class MessageLookup extends MessageLookupByLibrary {
     'moreInfo': MessageLookupByLibrary.simpleMessage('More Information'),
     'nowPlaying': MessageLookupByLibrary.simpleMessage('Now Playing'),
     'popularity': MessageLookupByLibrary.simpleMessage('Popularity'),
+    'premiumPier': MessageLookupByLibrary.simpleMessage('Watch Ads'),
     'profile': MessageLookupByLibrary.simpleMessage('Profile'),
     'ratedFor': MessageLookupByLibrary.simpleMessage('Rated For'),
     'rating': MessageLookupByLibrary.simpleMessage('Rating'),

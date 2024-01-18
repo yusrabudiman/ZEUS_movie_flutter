@@ -5,6 +5,7 @@ import 'package:flutter/services.dart';
 import 'package:provider/provider.dart';
 import 'package:spons/formpage/flutter_form_log_sign.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
+import 'package:spons/iklanbanner.dart';
 
 import 'package:spons/l10n/my_localization.dart';
 import 'package:spons/l10n/my_localization_delegate.dart';
@@ -25,8 +26,7 @@ Future<void> main() async {
 class MyApp extends StatelessWidget {
   final FirebaseAuth _auth = FirebaseAuth.instance;
   MyLocalizationDelegate _myLocalizationDelegate =
-      MyLocalizationDelegate(Locale('en', 'US'));
-
+      MyLocalizationDelegate(Locale('null', 'null'));
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
@@ -43,19 +43,26 @@ class MyApp extends StatelessWidget {
       ],
       theme: ThemeData(useMaterial3: true, brightness: Brightness.dark),
       debugShowCheckedModeBanner: false,
-      home: StreamBuilder<User?>(
-        stream: _auth.authStateChanges(),
-        builder: (BuildContext context, AsyncSnapshot<User?> snapshot) {
-          if (snapshot.connectionState == ConnectionState.active) {
-            if (snapshot.data != null) {
-              return MyWidget();
-            } else {
-              return LoginForm();
-            }
-          } else {
-            return CircularProgressIndicator();
-          }
-        },
+      home: Column(
+        children: [
+          Expanded(
+            child: StreamBuilder<User?>(
+              stream: _auth.authStateChanges(),
+              builder: (BuildContext context, AsyncSnapshot<User?> snapshot) {
+                if (snapshot.connectionState == ConnectionState.active) {
+                  if (snapshot.data != null) {
+                    return MyWidget();
+                  } else {
+                    return LoginForm();
+                  }
+                } else {
+                  return CircularProgressIndicator();
+                }
+              },
+            ),
+          ),
+          IklanBanner(),
+        ],
       ),
     );
   }
