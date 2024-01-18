@@ -6,7 +6,7 @@ import 'package:spons/l10n/my_localization.dart';
 import '../detailpage/DetailMovie.dart';
 
 class appSearch extends StatefulWidget {
-  const appSearch({super.key});
+  appSearch({Key? key}) : super(key: key);
 
   @override
   State<appSearch> createState() => _appSearchState();

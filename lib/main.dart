@@ -1,15 +1,13 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
+
 import 'package:provider/provider.dart';
 import 'package:spons/formpage/flutter_form_log_sign.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:spons/iklanbanner.dart';
 
-import 'package:spons/l10n/my_localization.dart';
 import 'package:spons/l10n/my_localization_delegate.dart';
-
 import 'package:spons/menu.dart';
 import 'package:spons/api/firebase_api.dart';
 import 'package:spons/provider/watchlist_provider.dart';
