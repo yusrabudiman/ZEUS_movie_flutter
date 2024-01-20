@@ -172,4 +172,12 @@ class MyLocalization {
           'Pengalaman sponsor iklan gratis. Tonton iklan Video singkat untuk Menghapus semua iklan untuk iklan terbuka kecuali Anda menutup aplikasi secara permanen',
     );
   }
+
+  String get about {
+    return Intl.message(
+      'Tentang Kami',
+      name: 'about',
+      desc: 'Tentang Kami',
+    );
+  }
 }

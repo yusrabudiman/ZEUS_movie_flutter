@@ -113,5 +113,11 @@
         "description": "Experience spons ad free. Watch a short Video ad to Remove all the ads for open ads except you close app permanent",
         "type": "text",
         "placeholders": {}
+    },
+    "about": "About",
+    "@about": {
+        "description": "About",
+        "type": "text",
+        "placeholders": {}
     }
 }

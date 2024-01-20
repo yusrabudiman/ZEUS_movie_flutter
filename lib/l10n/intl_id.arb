@@ -114,5 +114,11 @@
         "description": "Pengalaman sponsor iklan gratis. Tonton iklan Video singkat untuk Menghapus semua iklan untuk iklan terbuka kecuali Anda menutup aplikasi secara permanen",
         "type": "text",
         "placeholders": {}
+    },
+    "about": "Tentang Kami",
+    "@about": {
+        "description": "Tentang Kami",
+        "type": "text",
+        "placeholders": {}
     }
 }

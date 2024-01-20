@@ -25,6 +25,7 @@ class MessageLookup extends MessageLookupByLibrary {
       _notInlinedMessages(_notInlinedMessages);
 
   static Map<String, dynamic> _notInlinedMessages(_) => {
+        'about': MessageLookupByLibrary.simpleMessage('Tentang Kami'),
         'continueWatchAds': MessageLookupByLibrary.simpleMessage(
             'Pengalaman sponsor iklan gratis. Tonton iklan Video singkat untuk Menghapus semua iklan untuk iklan terbuka kecuali Anda menutup aplikasi secara permanen'),
         'descSearch': MessageLookupByLibrary.simpleMessage(

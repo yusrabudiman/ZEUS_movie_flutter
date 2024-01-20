@@ -25,7 +25,8 @@ class MessageLookup extends MessageLookupByLibrary {
   final Map<String, dynamic> messages = _notInlinedMessages(_notInlinedMessages);
 
   static Map<String, dynamic> _notInlinedMessages(_) => {
-      'continueWatchAds': MessageLookupByLibrary.simpleMessage('Pengalaman sponsor iklan gratis. Tonton iklan Video singkat untuk Menghapus semua iklan untuk iklan terbuka kecuali Anda menutup aplikasi secara permanen'),
+      'about': MessageLookupByLibrary.simpleMessage('Tentang Kami'),
+    'continueWatchAds': MessageLookupByLibrary.simpleMessage('Pengalaman sponsor iklan gratis. Tonton iklan Video singkat untuk Menghapus semua iklan untuk iklan terbuka kecuali Anda menutup aplikasi secara permanen'),
     'descSearch': MessageLookupByLibrary.simpleMessage('Coba fitur pencarian untuk menelusuri film yang kamu pikirkan'),
     'descWatchlist': MessageLookupByLibrary.simpleMessage('film favorit kosong ?\n coba fitur favorit di film detail dengan menambahkan pada tombol film favorit'),
     'favorite': MessageLookupByLibrary.simpleMessage('Tambah'),

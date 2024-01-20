@@ -6,6 +6,7 @@ import 'package:spons/detailpage/DetailMovie.dart';
 import 'package:spons/iklanbanner.dart';
 
 import 'package:spons/l10n/my_localization.dart';
+import 'package:spons/leftnav/about.dart';
 import 'package:spons/leftnav/profile.dart';
 import 'package:spons/leftnav/settings.dart';
 import 'package:firebase_database/firebase_database.dart';
@@ -107,6 +108,14 @@ class _leftNavbarAksiState extends State<leftNavbarAksi> {
             },
           ),
           Divider(),
+          ListTile(
+            leading: Icon(Icons.perm_identity),
+            title: Text('About'),
+            onTap: () {
+              Navigator.push(context,
+                  MaterialPageRoute(builder: (context) => AboutTeamZEUS()));
+            },
+          ),
         ],
       ),
     );
