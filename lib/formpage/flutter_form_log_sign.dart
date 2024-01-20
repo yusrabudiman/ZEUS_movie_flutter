@@ -121,7 +121,7 @@ class _LoginFormState extends State<LoginForm> {
                                   .currentState?.fields['password']?.value,
                             );
 
-                            Navigator.pushReplacement(
+                            Navigator.push(
                               context,
                               MaterialPageRoute(
                                   builder: (context) => MyWidget()),

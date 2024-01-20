@@ -2,6 +2,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:google_mobile_ads/google_mobile_ads.dart';
+import 'package:spons/detailpage/DetailMovie.dart';
 import 'package:spons/iklanbanner.dart';
 
 import 'package:spons/l10n/my_localization.dart';
@@ -23,7 +24,6 @@ class _leftNavbarAksiState extends State<leftNavbarAksi> {
   String? realName;
   String? photoUrl;
   String? bio;
-  late RewardedAd _rewardedAd;
 
   @override
   void initState() {
@@ -107,63 +107,6 @@ class _leftNavbarAksiState extends State<leftNavbarAksi> {
             },
           ),
           Divider(),
-          ListTile(
-            leading: Icon(Icons.ads_click),
-            title: Text(MyLocalization.of(context)!.premiumPier),
-            onTap: () {
-              Navigator.pop(context);
-              showDialog(
-                context: context,
-                builder: (BuildContext context) {
-                  return AlertDialog(
-                    title: Text(MyLocalization.of(context)!.premiumPier),
-                    content: SingleChildScrollView(
-                      child: ListBody(
-                        children: <Widget>[
-                          Text(MyLocalization.of(context)!.continueWatchAds),
-                        ],
-                      ),
-                    ),
-                    actions: <Widget>[
-                      Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        children: <Widget>[
-                          TextButton(
-                            child: Text(MyLocalization.of(context)!
-                                .premiumPier), // Text('watch Ads')
-                            onPressed: () {
-                              Navigator.pop(context);
-                              RewardedAd.load(
-                                  adUnitId:
-                                      'ca-app-pub-3940256099942544/5224354917',
-                                  request: AdRequest(),
-                                  rewardedAdLoadCallback:
-                                      RewardedAdLoadCallback(onAdLoaded: (ad) {
-                                    _rewardedAd = ad;
-                                    _rewardedAd?.show(
-                                        onUserEarnedReward: (ad, reward) {
-                                      debugPrint(
-                                          "My Reward Amount -> ${reward.amount}");
-                                    });
-                                  }, onAdFailedToLoad: ((error) {
-                                    debugPrint('error');
-                                  })));
-                            },
-                          ),
-                          TextButton(
-                            child: Text('Close'),
-                            onPressed: () {
-                              Navigator.of(context).pop();
-                            },
-                          ),
-                        ],
-                      )
-                    ],
-                  );
-                },
-              );
-            },
-          ),
         ],
       ),
     );
